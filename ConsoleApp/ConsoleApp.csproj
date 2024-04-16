@@ -5,6 +5,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>2799205_creative_idea_light_energy_power_icon.ico</ApplicationIcon>
+    <AssemblyName>StayaWake</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="2799205_creative_idea_light_energy_power_icon.ico" />
+  </ItemGroup>
 
 </Project>
