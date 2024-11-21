@@ -1,7 +1,40 @@
-﻿using System.Runtime.InteropServices;
+// See https://aka.ms/new-console-template for more information
+using System.Runtime.InteropServices;
 
 class Program
 {
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+    const byte VK_SHIFT = 0x10; // Código para tecla Shift
+    const uint KEYEVENTF_KEYUP = 0x0002;
+
+    static void SimulateKeyPress()
+    {
+        while (true)
+        {
+            keybd_event(VK_SHIFT, 0, 0, UIntPtr.Zero); // Pressiona Shift
+            keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, UIntPtr.Zero); // Solta Shift
+            Thread.Sleep(30000); // Repetir a cada 30 segundos
+        }
+    }
+
+    [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
+    public static extern bool SetCursorPos(int X, int Y);
+
+    static void SimulateMouseMovement()
+    {
+        int x = 0, y = 0;
+
+        while (true)
+        {
+            x = x == 0 ? 1 : 0; // Alterna a posição
+            y = y == 0 ? 1 : 0;
+            SetCursorPos(x, y);
+            Thread.Sleep(30000); // Move o mouse a cada 30 segundos
+        }
+    }
+
     // Importando as funções necessárias da API do Windows
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
@@ -61,6 +94,12 @@ class Program
     {
         // Impede que o sistema entre em modo de repouso ou desligue a tela
         SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
+
+        //Simula movimentação do mouse
+        //SimulateMouseMovement();
+
+        //Simula o precionamento de teclas
+        SimulateKeyPress();
 
         Console.WriteLine("\nMonitorando...\n");
 
